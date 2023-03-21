@@ -16,24 +16,9 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(Parameterized.class)
 public class CheckQuestionsTest {
 
     private WebDriver driver;
-    private final String driverName;
-
-    public CheckQuestionsTest(String driverName) {
-        this.driverName = driverName;
-    }
-
-    @Parameterized.Parameters(name = "Тестовые данные для оформления заказа")
-    public static Object[][] newOrderParams() {
-        return new Object[][]{
-                {"Chrome"},
-                {"Firefox"}
-        };
-
-    }
 
     private final String[] expectedAnswersList = new String[]{
             "Сутки — 400 рублей. Оплата курьеру — наличными или картой.",
@@ -48,6 +33,10 @@ public class CheckQuestionsTest {
 
     @Before
     public void websiteLaunch() {
+        String driverName = System.getenv("driverName");
+//        if(driverName == null) {
+//            driverName = "Chrome";
+//        }
         if (driverName == "Chrome") {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
             ChromeOptions options = new ChromeOptions();

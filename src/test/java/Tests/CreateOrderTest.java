@@ -27,9 +27,8 @@ public class CreateOrderTest {
     private final String phoneNumber;
     private final String rentalDate;
     private final String comment;
-    private final String driverName;
 
-    public CreateOrderTest(String name, String surname, String address, String metroStationFromOrder, String phoneNumber, String rentalDate, String comment, String driverName) {
+    public CreateOrderTest(String name, String surname, String address, String metroStationFromOrder, String phoneNumber, String rentalDate, String comment) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -37,21 +36,22 @@ public class CreateOrderTest {
         this.phoneNumber = phoneNumber;
         this.rentalDate = rentalDate;
         this.comment = comment;
-        this.driverName = driverName;
     }
 
     @Parameterized.Parameters(name = "Тестовые данные для оформления заказа")
     public static Object[][] newOrderParams() {
         return new Object[][]{
-                {"Имя", "Фамилия", "Адрес", "Сокольники", "79800989090", "10.10.2023", "мне не нужен самокат", "Chrome"},
-                {"Василий", "Васильевич", "Красная улица 1 дом 55", "Лубянка", "+79808900909", "01012023", "мне нужен самокат", "Chrome"},
-                {"Имя", "Фамилия", "Адрес", "Сокольники", "79800989090", "10.10.2023", "мне не нужен самокат", "Firefox"},
-                {"Василий", "Васильевич", "Красная улица 1 дом 55", "Лубянка", "+79808900909", "01012023", "мне нужен самокат", "Firefox"},
+                {"Имя", "Фамилия", "Адрес", "Сокольники", "79800989090", "10.10.2023", "мне не нужен самокат"},
+                {"Василий", "Васильевич", "Красная улица 1 дом 55", "Лубянка", "+79808900909", "01012023", "мне нужен самокат"},
         };
     }
 
     @Before
     public void websiteLaunch() {
+        String driverName = System.getenv("driverName");
+//        if(driverName == null) {
+//            driverName = "Chrome";
+//        }
         if (driverName == "Chrome") {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
             ChromeOptions options = new ChromeOptions();
