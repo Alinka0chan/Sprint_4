@@ -1,8 +1,8 @@
-package Tests;
+package tests;
 
-import PageObject.HomePageScooter;
-import PageObject.OrderPageScooter;
-import PageObject.RentPageScooter;
+import page_object.HomePageScooter;
+import page_object.OrderPageScooter;
+import page_object.RentPageScooter;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -14,7 +14,8 @@ import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static page_object.constants.Stands.SCOOTER_SERVICES;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
@@ -49,18 +50,13 @@ public class CreateOrderTest {
     @Before
     public void websiteLaunch() {
         String driverName = System.getenv("driverName");
-//        if(driverName == null) {
-//            driverName = "Chrome";
-//        }
-        if (driverName == "Chrome") {
+        if (driverName.equals("Chrome")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
             ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
             driver = new ChromeDriver(options);
-        } else if (driverName == "Firefox") {
+        } else if (driverName.equals("Firefox")) {
             System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
             FirefoxOptions options = new FirefoxOptions();
-//        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
             driver = new FirefoxDriver(options);
         }
     }
@@ -70,16 +66,16 @@ public class CreateOrderTest {
 
         HomePageScooter homePage = new HomePageScooter(driver);
 
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        driver.get(SCOOTER_SERVICES);
         homePage.waitForLoadOrderButton();
         homePage.openOrderPageWithHeaderOrderButton();
 
         OrderPageScooter orderPage = new OrderPageScooter(driver);
-        orderPage.makingOrder(name, surname, address, metroStationFromOrder, phoneNumber);
+        orderPage.makeOrder(name, surname, address, metroStationFromOrder, phoneNumber);
         orderPage.clickNextButton();
         RentPageScooter rentPage = new RentPageScooter(driver);
         rentPage.makingRentPageScooter(rentalDate, comment);
-        assertEquals("Не удалось оформить заказ", true, rentPage.getSuccessAlert().contains("Заказ оформлен"));
+        assertTrue(rentPage.getSuccessAlert().contains("Заказ оформлен"));
     }
 
     @Test
@@ -87,16 +83,16 @@ public class CreateOrderTest {
 
         HomePageScooter homePage = new HomePageScooter(driver);
 
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        driver.get(SCOOTER_SERVICES);
         homePage.waitForLoadOrderButton();
         homePage.openOrderPageWithMiddleOrderButton();
 
         OrderPageScooter orderPage = new OrderPageScooter(driver);
-        orderPage.makingOrder(name, surname, address, metroStationFromOrder, phoneNumber);
+        orderPage.makeOrder(name, surname, address, metroStationFromOrder, phoneNumber);
         orderPage.clickNextButton();
         RentPageScooter rentPage = new RentPageScooter(driver);
         rentPage.makingRentPageScooter(rentalDate, comment);
-        assertEquals("Не удалось оформить заказ", true, rentPage.getSuccessAlert().contains("Заказ оформлен"));
+        assertTrue(rentPage.getSuccessAlert().contains("Заказ оформлен"));
     }
 
     @After

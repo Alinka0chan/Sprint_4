@@ -1,11 +1,7 @@
-package Tests;
+package tests;
 
-import PageObject.HomePageScooter;
-import PageObject.OrderPageScooter;
-import PageObject.RentPageScooter;
+import page_object.HomePageScooter;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,7 +10,7 @@ import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-import static org.junit.Assert.assertEquals;
+import static page_object.constants.Stands.SCOOTER_SERVICES;
 
 public class CheckQuestionsTest {
 
@@ -34,27 +30,22 @@ public class CheckQuestionsTest {
     @Before
     public void websiteLaunch() {
         String driverName = System.getenv("driverName");
-//        if(driverName == null) {
-//            driverName = "Chrome";
-//        }
-        if (driverName == "Chrome") {
+        if (driverName.equals("Chrome")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
             ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
             driver = new ChromeDriver(options);
-        } else if (driverName == "Firefox") {
+        } else if (driverName.equals("Firefox")) {
             System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
             FirefoxOptions options = new FirefoxOptions();
-//        options.addArguments("--no-sandbox", "--headless", "--disable-dev-shm-usage");
             driver = new FirefoxDriver(options);
         }
     }
 
     @Test
-    public void CheckQuestionsTest() {
+    public void checkQuestionsTest() {
         HomePageScooter homePage = new HomePageScooter(driver);
 
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        driver.get(SCOOTER_SERVICES);
         homePage.clickCookieButton();
         homePage.scrollPageToEndList();
         for (int i = 0; i < 8; i++) {
@@ -65,6 +56,6 @@ public class CheckQuestionsTest {
 
     @After
     public void teardown() {
-        this.driver.quit();
+        driver.quit();
     }
 }

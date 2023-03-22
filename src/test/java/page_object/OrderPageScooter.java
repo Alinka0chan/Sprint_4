@@ -1,4 +1,4 @@
-package PageObject;
+package page_object;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -58,7 +58,7 @@ public class OrderPageScooter {
         driver.findElement(nextButton).click();
     }
 
-    public void makingOrder(String name, String surname, String address, String metroStationFromOrder, String phoneNumber) {
+    public void makeOrder(String name, String surname, String address, String metroStationFromOrder, String phoneNumber) {
         waitForLoadHeader();
         setName(name);
         setSurname(surname);
