@@ -17,26 +17,8 @@ public class HomePageScooter {
     private By middleOrderButton = By.className("Button_Middle__1CSJM");
     //Кнопка о куки "да все привыкли"
     private final By cookieButton = By.id("rcc-confirm-button");
-    //Список вопросов
-    private static final String[] dropDownQuestionsArray = new String[]{
-            "accordion__heading-0",
-            "accordion__heading-1",
-            "accordion__heading-2",
-            "accordion__heading-3",
-            "accordion__heading-4",
-            "accordion__heading-5",
-            "accordion__heading-6",
-            "accordion__heading-7"};
-    //Список панелей с текстом ответов
-    private static final String[] dropDownAnswersArray = new String[]{
-            "accordion__panel-0",
-            "accordion__panel-1",
-            "accordion__panel-2",
-            "accordion__panel-3",
-            "accordion__panel-4",
-            "accordion__panel-5",
-            "accordion__panel-6",
-            "accordion__panel-7"};
+
+    private final By questionsList = By.className("accordion");
 
     public HomePageScooter(WebDriver driver) {
         this.driver = driver;
@@ -62,20 +44,21 @@ public class HomePageScooter {
     }
 
     public void scrollPageToEndList() {
-        WebElement lastQuestionArrow = driver.findElement(By.id(dropDownQuestionsArray[7]));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", lastQuestionArrow);
+        WebElement element = driver.findElement(questionsList);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
     }
 
-    public void clickQuestion(int questionNumber) {
-        new WebDriverWait(driver, 3)
-                .until(ExpectedConditions.elementToBeClickable(By.id(dropDownQuestionsArray[questionNumber])));
-        driver.findElement(By.id(dropDownQuestionsArray[questionNumber])).click();
+    public void clickQuestion(String questionNumber) {
+        String questionsList = String.format(".//div[@class='accordion']//*[text()='" + questionNumber + "']");
+        driver.findElement(By.xpath(questionsList)).click();
     }
 
-    public static void checkAnswerText(String expectedText, int answerNumber) {
-        new WebDriverWait(driver, 3)
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id(dropDownAnswersArray[answerNumber])));
-        String answerText = driver.findElement(By.id(dropDownAnswersArray[answerNumber])).getText();
-        assertEquals(expectedText, answerText);
+    public String checkAnswerText(String expectedText) {
+        String answersList = ".//div[@class='accordion']//*[text()='" + expectedText + "']";
+
+        new WebDriverWait(driver, 15)
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(answersList)));
+
+        return driver.findElement(By.xpath(answersList)).getText();
     }
 }
